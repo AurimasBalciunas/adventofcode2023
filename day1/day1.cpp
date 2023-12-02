@@ -5,7 +5,7 @@
 using namespace std;
 
 
-// using std::isDigit from cctypes felt like cheating
+// using std::isdigit from cctypes felt like cheating
 bool isDigit(char ch)
 {
 	return ((ch - 48 >= 0) && (ch - 48 <= 9));
@@ -14,9 +14,9 @@ bool isDigit(char ch)
 
 int main()
 {	
+	// file open and error check
 	string filename = "input.txt";
-	ifstream file(filename);
-	
+	ifstream file(filename);	
 	if(!file)
 	{
 		throw(std::runtime_error("File not found: " + filename));
@@ -43,19 +43,17 @@ int main()
 			}
 		}
 
+		// error check and add values to overall sum
 		if(firstDigit == -1 || lastDigit == -1)
 		{
 			throw(std::runtime_error("No digits found in line: " + line));
 		}
-
 		long long lineDigit = firstDigit*10 + lastDigit;
 		sum += lineDigit;
-
 		cout << "Added " << lineDigit << " to sum" <<  endl;
 	}
 	
 	cout << "Sum is: " << sum;
-
 	file.close();
 	return 0;
 }
