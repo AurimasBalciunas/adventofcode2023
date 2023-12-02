@@ -48,7 +48,7 @@ int main()
 		{
 			throw(std::runtime_error("No digits found in line: " + line));
 		}
-		long long lineDigit = firstDigit*10 + lastDigit;
+		int lineDigit = firstDigit*10 + lastDigit;
 		sum += lineDigit;
 		cout << "Added " << lineDigit << " to sum" <<  endl;
 	}
