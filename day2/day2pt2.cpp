@@ -5,6 +5,7 @@
 #include <string>
 #include <regex>
 #include <unordered_map>
+#include <algorithm>
 
 using namespace std;
 
@@ -54,31 +55,27 @@ int main()
     while(getline(file, line))
     {
         
-        bool valid = true;
+        unordered_map<string, int> mins{{"red", 0}, {"green", 0}, {"blue", 0}};
+        
         string sub = line.substr(line.find(':') + 1);
         vector<string> cubeset = split(sub, ',');
         for(auto cube : cubeset)
         {
-            while(valid && regex_search(cube, match, pattern))
+            while(regex_search(cube, match, pattern))
             {
                 int number = stoi(match[1].str());
                 string color = match[2].str();
-
-                //cout << "Found " << number << " of " << color << endl;
                 cube = match.suffix().str();
-                if(allowed[color] < number)
-                {
-                    cout << "For game " << game << " number of " << color << " was too high: " << number << endl;
-                    valid = false;
-                    break;
-                }
+                mins[color] = max(mins[color], number);
             }
         }
-        if(valid)
-        {
-            sum += game;
-            cout << "Adding game " << game << ". Sum now: " << sum << endl;
+
+        int local = 1;
+        for(const auto & pair : mins) {
+            local *= pair.second;
         }
+        sum += local;
+
         game++;
     }
 
