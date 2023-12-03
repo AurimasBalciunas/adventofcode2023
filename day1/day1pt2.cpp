@@ -107,7 +107,7 @@ int main() {
     ifstream file(filename);
     if(!file)
     {
-        throw(std::runtime_error("File not found: " + filename));
+        throw(runtime_error("File not found: " + filename));
     }
 
 

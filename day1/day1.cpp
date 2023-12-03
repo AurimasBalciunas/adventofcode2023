@@ -46,7 +46,7 @@ int main()
 		// error check and add values to overall sum
 		if(firstDigit == -1 || lastDigit == -1)
 		{
-			throw(std::runtime_error("No digits found in line: " + line));
+			throw(runtime_error("No digits found in line: " + line));
 		}
 		int lineDigit = firstDigit*10 + lastDigit;
 		sum += lineDigit;
