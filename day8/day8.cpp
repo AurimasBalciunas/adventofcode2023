@@ -3,11 +3,15 @@
 #include <regex>
 #include <unordered_map>
 #include <string>
+#include <algorithm>
+#include <numeric>
 
 using namespace std;
 
-void pt1(const string& origin, const string& destination, const unordered_map<string, pair<string, string>>& map, const vector<char>& moves)
+void pt1(const unordered_map<string, pair<string, string>>& map, const vector<char>& moves)
 {
+    string origin = "AAA";
+    string destination = "ZZZ"; 
     long long currMove = 0;
     string current = origin;
     while(current != destination)
@@ -18,6 +22,51 @@ void pt1(const string& origin, const string& destination, const unordered_map<st
     }
     cout << "It took " << currMove << " moves to reach the destination." << endl; 
 }
+
+void pt2(const unordered_map<string, pair<string, string>>& map, const vector<char>& moves)
+{
+    vector<string> travelers;
+    for(auto& elem : map)
+    {
+        if(elem.first[2] == 'A')
+        {
+            travelers.push_back(elem.first);
+        }
+    }
+
+    for(auto& traveler : travelers)
+    {
+        cout << "Traveler : " << traveler << endl;
+    }
+
+    // Why not just calculate how long it would take each one to get to dest then find least common multiple
+    vector<int> moveCounts(travelers.size(), 0);
+    for(int i = 0; i < travelers.size(); i++)
+    {
+        string traveler = travelers[i];
+        long long currMove = 0;
+        while(traveler[2] != 'Z')
+        {
+            char move = moves[currMove%moves.size()];
+            traveler = (move == 'L') ? map.at(traveler).first : map.at(traveler).second;
+            currMove++;
+        }
+        moveCounts[i] = currMove;
+        cout << "It took traveler " << i << " " << currMove << " moves to reach the destination" << endl;
+    }
+
+
+    long long total = 1;
+    for(int i = 0; i < moveCounts.size(); i++)
+    {
+        total = lcm(total, moveCounts[i]);
+    }
+    cout << "Pt2 Total was " << total << endl;
+
+
+}
+//14523852448103 too high
+//14265111103729 is the ans
 
 
 int main()
@@ -42,10 +91,9 @@ int main()
         moves.push_back(ch);
     }
 
-    getline(file, line); //skip the blank line
+    // skip the blank line
+    getline(file, line);
 
-    string origin = "AAA";
-    string destination = "ZZZ";
     while(getline(file, line))
     {
         string node = line.substr(0, 3);
@@ -54,8 +102,8 @@ int main()
         map[node] = make_pair(leftChild, rightChild);
     }
 
-    cout << "Origin " << origin << " Destination " << destination << endl;
-    pt1(origin, destination, map, moves);
+    pt1(map, moves);
+    pt2(map, moves);
     
     
 }
